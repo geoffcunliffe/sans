@@ -1,0 +1,13 @@
+Description: >
+  DevSecOps Workshop - Container Registry Stack
+
+Resources:
+  ApiRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: "creditunion-api"
+
+Outputs:
+  ApiRepository:
+    Description: "API container repository"
+    Value: !Ref ApiRepository

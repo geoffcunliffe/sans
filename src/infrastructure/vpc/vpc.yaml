@@ -1,5 +1,5 @@
 Description: >
-  DevSecOps Workshop
+  DevSecOps Workshop - VPC Stack
 
 Parameters:
   ManagementCidr:
@@ -73,3 +73,7 @@ Outputs:
   ManagementVpcId:
     Description: "Management VPC id"
     Value: !Ref ManagementVpc
+
+  ManagementSubnetPublic:
+    Description: "Management public subnet id"
+    Value: !Ref ManagementSubnetPublic

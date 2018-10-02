@@ -1,5 +1,5 @@
 Description: >
-  DevSecOps Workshop
+  DevSecOps Workshop - Master Stack
 
 Parameters:
   TemplateBucket:
@@ -41,6 +41,10 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Join ["/", [!FindInMap [S3BaseUrl, !Ref "AWS::Region" , url], !Ref TemplateBucket, "infrastructure/management/codecommit.yaml"]]
+  ContainerRegistry:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join ["/", [!FindInMap [S3BaseUrl, !Ref "AWS::Region" , url], !Ref TemplateBucket, "infrastructure/management/containerregistry.yaml"]]
   Vpc:
     Type: AWS::CloudFormation::Stack
     Properties:
@@ -52,9 +56,37 @@ Resources:
           !FindInMap [Network, "management", subnetPublicCidrBlock]
         ManagementPrivateSubnetCidr:
           !FindInMap [Network, "management", subnetPrivateCidrBlock]
+  SecurityGroups:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: [ Vpc ]
+    Properties:
+      TemplateURL: !Join ["/", [!FindInMap [S3BaseUrl, !Ref "AWS::Region" , url], !Ref TemplateBucket, "infrastructure/vpc/securitygroups.yaml"]]
+      Parameters:
+        ManagementVpc:
+          !GetAtt [ Vpc, Outputs.ManagementVpcId ]
+        AdminIp:
+          !Ref AdminIp
+  Jenkins:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: [ Vpc , SecurityGroups ]
+    Properties:
+      TemplateURL: !Join ["/", [!FindInMap [S3BaseUrl, !Ref "AWS::Region" , url], !Ref TemplateBucket, "infrastructure/management/jenkins.yaml"]]
+      Parameters:
+        SubnetId:
+          !GetAtt [ Vpc, Outputs.ManagementSubnetPublic ]
+        SecurityGroupId:
+          !GetAtt [ SecurityGroups, Outputs.ManagementPublicSecurityGroup ]
 
 Outputs:
 
   BankCodeCommitRepository:
-  Description: "Credit Union code commit repository"
-  Value: !GetAtt [ "CodeCommit", Outputs.BankCodeCommit]
+    Description: "Credit Union code commit repository"
+    Value: !GetAtt [ "CodeCommit", Outputs.BankCodeCommit]
+  
+  JenkinsUrl:
+    Description: "Jenkins front end URL"
+    Value: !GetAtt [ "Jenkins", Outputs.JenkinsUrl]
+
+  ContainerRegistry:
+    Description: "API container registery"
+    Value: !GetAtt [ "ContainerRegistry", Outputs.ApiRepository]

@@ -1,0 +1,58 @@
+Description: >
+  DevSecOps Workshop - Jenkins Stack
+
+Parameters:
+  SubnetId:
+    Description: "Subnet to host the Jenkins instance"
+    Type: AWS::EC2::Subnet::Id
+    MinLength: 1
+  SecurityGroupId:
+    Description: "Security group for the Jenkins instance"
+    Type: AWS::EC2::SecurityGroup::Id
+    MinLength: 1
+
+Mappings:
+   Images:
+    ap-southeast-2:
+      jenkinsAmi: "ami-03ade0a6f8395bee9"
+
+Resources:
+  JenkinsInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref JenkinsRole
+
+  JenkinsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      RoleName: !Sub devsecops-workshop-jenkins-${AWS::Region}
+      AssumeRolePolicyDocument: |
+        {
+            "Statement": [{
+                "Effect": "Allow",
+                "Principal": { "Service": [ "ec2.amazonaws.com" ]},
+                "Action": [ "sts:AssumeRole" ]
+            }]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
+  
+  #TODO: REMOVE THE KEY NAME
+  InstanceWeb:
+    Type: AWS::EC2::Instance
+    Properties:
+      IamInstanceProfile: !Ref JenkinsInstanceProfile
+      ImageId: !FindInMap [Images, !Ref "AWS::Region", jenkinsAmi]
+      InstanceType: "t2.micro"
+      KeyName: "devsecops" 
+      SecurityGroupIds:
+        - !Ref SecurityGroupId
+      SubnetId: !Ref SubnetId
+
+Outputs:
+  JenkinsUrl:
+    Description: "URL to the Jenkins front end"
+    Value: !Sub "https://${InstanceWeb.PublicIp}/jenkins"

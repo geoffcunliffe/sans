@@ -1,0 +1,39 @@
+Description: >
+    DevSecOps Workshop - Security Groups Stack
+
+Parameters:
+  ManagementVpc:
+    Description: VPC to attach the security groups
+    Type: String
+    AllowedPattern: "^vpc-[a-zA-Z0-9]+$"
+    MinLength: 1
+  AdminIp:
+    Type: String
+    Description: "Admin IP address granted SSH access (e.g. your IP address)."
+    AllowedPattern: "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\/\\d{1,2}$"
+    MinLength: 1
+
+Resources:
+  ManagementPublicSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref ManagementVpc
+      GroupDescription: "Subnet sg allows HTTP 80/443 and SSH from management subnet."
+      SecurityGroupIngress:
+        - CidrIp: !Ref AdminIp
+          IpProtocol: "TCP"
+          FromPort: 80
+          ToPort: 80
+        - CidrIp: !Ref AdminIp
+          IpProtocol: "TCP"
+          FromPort: 443
+          ToPort: 443
+        - CidrIp: !Ref AdminIp
+          IpProtocol: "TCP"
+          FromPort: 22
+          ToPort: 22
+
+Outputs:
+  ManagementPublicSecurityGroup:
+    Description: "Public subnet security group"
+    Value: !Ref ManagementPublicSecurityGroup
