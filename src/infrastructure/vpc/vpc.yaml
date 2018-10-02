@@ -1,0 +1,75 @@
+Description: >
+  DevSecOps Workshop
+
+Parameters:
+  ManagementCidr:
+    Type: String
+    Description: "CIDR block for the management network"
+    AllowedPattern: "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\/\\d{1,2}$"
+    MinLength: 1
+  
+  ManagementPublicSubnetCidr:
+    Type: String
+    Description: "CIDR block for the management public subnet"
+    AllowedPattern: "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\/\\d{1,2}$"
+    MinLength: 1
+
+  ManagementPrivateSubnetCidr:
+    Type: String
+    Description: "CIDR block for the management private subnet"
+    AllowedPattern: "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\/\\d{1,2}$"
+    MinLength: 1
+
+Resources:
+  ManagementVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref ManagementCidr
+
+  ManagementSubnetPublic:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref ManagementVpc
+      CidrBlock: !Ref ManagementPublicSubnetCidr
+      AvailabilityZone: !Select [0, !GetAZs ]
+      MapPublicIpOnLaunch: true
+
+  ManagementSubnetPrivate:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref ManagementVpc
+      CidrBlock: !Ref ManagementPrivateSubnetCidr
+      AvailabilityZone: !Select [0, !GetAZs ]
+      MapPublicIpOnLaunch: false
+
+  ManagementInternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  VPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref ManagementInternetGateway
+      VpcId: !Ref ManagementVpc
+
+  ManagementPublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref ManagementVpc
+
+  ManagementPublicRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref ManagementPublicRouteTable
+      GatewayId: !Ref ManagementInternetGateway
+      DestinationCidrBlock: "0.0.0.0/0"
+
+  SubnetPublic1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref ManagementPublicRouteTable
+      SubnetId: !Ref ManagementSubnetPublic
+
+Outputs:
+  ManagementVpcId:
+    Description: "Management VPC id"
+    Value: !Ref ManagementVpc

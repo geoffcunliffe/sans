@@ -1,0 +1,60 @@
+Description: >
+  DevSecOps Workshop
+
+Parameters:
+  TemplateBucket:
+    Type: String
+    Description: "S3 bucket containing the CloudFormation templates."
+    AllowedPattern: "^[a-zA-Z0-9-/.]+$"
+    MinLength: 1
+  AdminIp:
+    Type: String
+    Description: "Admin IP address granting web / SSH access to the management subet (e.g. your IP address)."
+    AllowedPattern: "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\/\\d{1,2}$"
+    MinLength: 1
+    Default: "0.0.0.0/0"
+Mappings:
+  Network:
+    management:
+      vpcCidrBlock: "10.10.0.0/16"
+      subnetPublicCidrBlock: "10.10.0.0/24"
+      subnetPrivateCidrBlock: "10.10.1.0/24"
+    api:
+      vpcCidrBlock: "10.42.0.0/16"
+      subnetPublicCidrBlockAz1: "10.42.0.0/24"
+      subnetPrivateCidrBlockAz1: "10.42.1.0/24"
+  S3BaseUrl:
+    us-east-1:
+      url: "https://s3.amazonaws.com"
+    us-west-1:
+      url: "https://s3-us-west-1.amazonaws.com"
+    us-west-2:
+      url: "https://s3-us-west-2.amazonaws.com"
+    ap-northeast-1:
+      url: "https://s3-ap-northeast-1.amazonaws.com"
+    eu-west-1:
+      url: "https://s3-eu-west-1.amazonaws.com"
+    ap-southeast-2:
+      url: "https://s3-ap-southeast-2.amazonaws.com"
+Resources:
+  CodeCommit:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join ["/", [!FindInMap [S3BaseUrl, !Ref "AWS::Region" , url], !Ref TemplateBucket, "infrastructure/management/codecommit.yaml"]]
+  Vpc:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join ["/", [!FindInMap [S3BaseUrl, !Ref "AWS::Region" , url], !Ref TemplateBucket, "infrastructure/vpc/vpc.yaml"]]
+      Parameters:
+        ManagementCidr:
+          !FindInMap [Network, "management", vpcCidrBlock]
+        ManagementPublicSubnetCidr:
+          !FindInMap [Network, "management", subnetPublicCidrBlock]
+        ManagementPrivateSubnetCidr:
+          !FindInMap [Network, "management", subnetPrivateCidrBlock]
+
+Outputs:
+
+  BankCodeCommitRepository:
+  Description: "Credit Union code commit repository"
+  Value: !GetAtt [ "CodeCommit", Outputs.BankCodeCommit]

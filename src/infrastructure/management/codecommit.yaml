@@ -1,0 +1,14 @@
+Description: >
+  DevSecOps Workshop
+
+Resources:
+  BankCodeCommit:
+    Type: "AWS::CodeCommit::Repository"
+    Properties:
+      RepositoryDescription: "Credit Union repository"
+      RepositoryName: "credit-union"
+
+Outputs:
+  BankCodeCommit:
+    Description: "Credit Union repository"
+    Value: !GetAtt BankCodeCommit.CloneUrlSsh
