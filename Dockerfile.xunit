@@ -1,0 +1,17 @@
+FROM microsoft/dotnet:2.1-sdk
+WORKDIR /
+
+# Copy src code
+COPY ./src/app ./src/app
+
+# Copy test code
+COPY ./tests/app ./tests/app
+
+# Build test code
+WORKDIR /tests/app
+RUN dotnet restore Sans.CreditUnion.API.Tests.csproj
+
+# Run tests
+RUN mkdir results
+
+ENTRYPOINT ["dotnet", "xunit", "-namespace Sans.CreditUnion.API.Tests.FeaturesTests -xml /results/xunit.xml"]
