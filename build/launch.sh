@@ -15,4 +15,4 @@ sed -i -e "s#Server=localhost;#Server=$IP_ADDRESS;#g" api/appsettings.json
 docker build --tag $1:$2 .
 
 # Run web api container
-docker run --name creditunion-api-acceptance -p 44300:44300 --link creditunion-db-acceptance $1:$2
+docker run --name creditunion-api-acceptance -p 44300:44300 --link creditunion-db-acceptance -d $1:$2
