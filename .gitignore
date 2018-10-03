@@ -21,7 +21,6 @@ nupkg/
 [Rr]eleases/
 x64/
 x86/
-build/
 bld/
 [Bb]in/
 [Oo]bj/
@@ -32,3 +31,4 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+results
