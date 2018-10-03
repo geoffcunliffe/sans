@@ -1,4 +1,5 @@
-﻿using Sans.CreditUnion.API.Tests.Shared;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Sans.CreditUnion.API.Tests.Shared;
 using System.Net.Http;
 using Xunit;
 
