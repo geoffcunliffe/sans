@@ -2,9 +2,25 @@
 
 To get started, let's get your environment created and configured so we can hop in and build security for the rest of the workshop.
 
-## 1) Launch the DevSecOps Workshop CloudFormation Stack
+## 0) Create an EC2 Keypair 
+
+- For troubleshooting the Jenkins instance we will use for demos, it is easiest to create a keypair for launching the instance
 
 - Sign in to the AWS Console
+
+- Change the region (top right) to the region used for the worshop
+
+- In the Services menu, type EC2 and press the link
+
+- Press the **Key Pairs** link on the left side
+
+- Press the Create Key Pair button
+
+    - Enter **devsecops** as the key pair name and download the file into your ~/.ssh/ directory
+
+## 1) Launch the DevSecOps Workshop CloudFormation Stack
+
+- In the AWS Console, select the Services menu
 
 - In the Services menu, enter **CloudFormation** and press enter.
 
@@ -114,3 +130,27 @@ To get started, let's get your environment created and configured so we can hop 
     ```
 
 - Run the **Bank_Build** job to test your connection to the git repository. If all is well, your workspace will contain the devsecops-workshop files.
+
+## Troubleshooting
+
+- Helpful troubleshooting commands:
+
+    - Restarting Jenkins / Tomcat services
+
+    ```bash
+    sudo /opt/bitnami/ctlscript.sh restart
+    ```
+
+    - Clearing up disk space when Docker fills up
+
+    ```bash
+    docker rmi $(docker images -q -f "dangling=true")
+    docker rmi --force $(docker images -q creditunion-apitests | uniq)
+    ```
+
+    - Restarting Docker
+
+    ```
+    sudo service docker stop
+    sudo service docker start
+    ```
