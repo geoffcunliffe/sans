@@ -22,7 +22,12 @@ namespace Sans.CreditUnion.API.Features.CheckOrders
             var checkOrder = _checkOrderService.GetCheckOrderByGuid(guid);
 
             if (checkOrder == null)
+            {
                 return NotFound();
+
+                //TODO: Log the test order when logging is ready
+                string logger = guid;
+            }
 
             return checkOrder;
         }
