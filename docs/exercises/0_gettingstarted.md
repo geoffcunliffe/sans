@@ -2,7 +2,7 @@
 
 To get started, let's get your environment created and configured so we can hop in and build security for the rest of the workshop.
 
-## 0) Create an EC2 Keypair 
+## 0) Create an EC2 Keypair
 
 - For troubleshooting the Jenkins instance we will use for demos, it is easiest to create a keypair for launching the instance
 

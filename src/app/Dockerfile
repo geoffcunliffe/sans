@@ -11,6 +11,10 @@ RUN dotnet publish -c Release -o /app/www ./api/Sans.CreditUnion.API.csproj
 # Copy runtime cert
 COPY ./api/SansCredit.pfx /app/www
 
+# OLD CODE - REMOVE ME LATER
+# AWS_ACCESS_KEY_ID=AKIAJOZ2BJ2FOYJGLPYQ
+# AWS_SECRET_ACCESS_KEY=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
+
 # Build runtime image
 FROM microsoft/dotnet:2.1-sdk
 WORKDIR /www

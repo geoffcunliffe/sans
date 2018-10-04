@@ -5,6 +5,9 @@ project.lock.json
 *.pyc
 nupkg/
 
+# Hack to stop gitallowed from going into the repo (demo only - don't do this in real life)
+.gitallowed
+
 # Visual Studio Code
 .vscode
 

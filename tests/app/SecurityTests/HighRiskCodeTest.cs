@@ -13,7 +13,7 @@ namespace Sans.CreditUnion.API.Tests.SecurityTests
     public class HighRiskCodeTest
     {
         [Theory]
-        [InlineData("../../../../../src/app/api/Features/Authentication/AuthenticationController.cs", "")]
+        [InlineData("../../../../../src/app/api/Features/Authentication/AuthenticationController.cs", "2c79238c6af087c41bcc912c7cca9ac315fa277f")]
         public void HighRiskCode_CheckSumTest(string file, string checksum)
         {
             string actual = HashWrapper.GetChecksum(file);
