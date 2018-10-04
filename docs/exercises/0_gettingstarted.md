@@ -123,13 +123,17 @@ To get started, let's get your environment created and configured so we can hop 
 
 ## 4) Connect Jenkins and CodeCommit
 
-- Back in Jenkins, open the **Bank_Build** job and configure the **Source Code Management** section's git repository to use your **SSH Key ID** and git clone url. The format should be similar to the following:
+- Back in Jenkins, press the Manage Jenkins link in the left navigation menu.
+
+- Press the Configure System button
+
+- In the Global properties section, set the value of the **AWS_CODECOMMIT_REPOSITORY_URL** to your **SSH Key ID** and git clone url. The format should look like the the following:
 
     ```bash
     ssh://<ENTER YOUR SSH KEY ID>@git-codecommit.ap-southeast-2.amazonaws.com/v1/repos/credit-union
     ```
 
-- Run the **Bank_Build** job to test your connection to the git repository. If all is well, your workspace will contain the devsecops-workshop files.
+- Go back to the Jenkins home screen and start your pipeline. This will kick off the  **Build Application** job to test your connection to the git repository.
 
 ## Troubleshooting
 

@@ -66,6 +66,40 @@ Unit testing is critical for DevSecOps and making up for false negatives that oc
 
 ## Container Security
 
+The Build phase creates a Docker container for deploying the Credit Union API. Let's finish configuring the Anchore Container Scan task.
 
+- The first build step pulls the AWS repository URI from code commit and reads the current build id from the pipeline. Your mission is to add one final line of code to create a new file called **anchore_images**, which tells the engine which images to scan. The format of the file is as follows:
+
+    ```
+    REPOSITORY_URL:TAG path/to/Dockerfile
+    ```
+
+- The following line of code will create the **anchore_images** file with the correct values and format:
+
+    ```bash
+    echo "${REPOSITORY_URI}:${TAG} ${WORKSPACE}/src/app/Dockerfile " > anchore_images
+    ```
+
+- Save the Anchore scan job and start the pipeline. Once it is done, inspect the image scan results. Are any high risk vulnerabilities identified?
 
 ## Dependency Management
+
+Running the OWASP Dependency Check scanner in Jenkins is very easy after you install the custom plugin. After building the application, simply add a new build task with the path to the directory containing the binary files to analyze.
+
+- Open the Dependency Check Scan task and press configure
+
+- Find the first build task that builds the Credit Union application with a docker run command similar to the following:
+
+    ```bash
+    docker run --rm -v ${WORKSPACE}/src:/src microsoft/dotnet:2.1-sdk dotnet build src/app/api/Sans.CreditUnion.API.csproj
+    ```
+
+- Add a new build step called of type **Invoke Dependency-Check analysis**.
+
+- In the path to scan field, enter the directory containing the binary files:
+
+    ```
+    src/app/api/bin/Debug/netcoreapp2.1/
+    ```
+
+- Save the Dependency Check Scan job and start the pipeline. Once it is done, inspect the dependency check results. Are any vulnerabilities identified? At least our app code is clean, compared to the container scan results, right?
