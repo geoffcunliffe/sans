@@ -32,6 +32,11 @@ Resources:
           IpProtocol: "TCP"
           FromPort: 22
           ToPort: 22
+        # TESTING CONTAINER EXTERNALLY (TMP ONLY)
+        - CidrIp: !Ref AdminIp
+          IpProtocol: "TCP"
+          FromPort: 44300
+          ToPort: 44300
 
 Outputs:
   ManagementPublicSecurityGroup:

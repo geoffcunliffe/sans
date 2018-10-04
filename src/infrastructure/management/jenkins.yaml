@@ -14,7 +14,7 @@ Parameters:
 Mappings:
    Images:
     ap-southeast-2:
-      jenkinsAmi: "ami-03ade0a6f8395bee9"
+      jenkinsAmi: "ami-028b890291305e031"
 
 Resources:
   JenkinsInstanceProfile:
@@ -40,13 +40,12 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
   
-  #TODO: REMOVE THE KEY NAME
   InstanceWeb:
     Type: AWS::EC2::Instance
     Properties:
       IamInstanceProfile: !Ref JenkinsInstanceProfile
       ImageId: !FindInMap [Images, !Ref "AWS::Region", jenkinsAmi]
-      InstanceType: "t2.micro"
+      InstanceType: "t3.xlarge"
       KeyName: "devsecops" 
       SecurityGroupIds:
         - !Ref SecurityGroupId

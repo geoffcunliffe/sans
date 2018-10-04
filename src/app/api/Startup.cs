@@ -99,14 +99,6 @@ namespace Sans.CreditUnion.API
                 app.UseDeveloperExceptionPage();
             }
 
-            /*
-            app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
-            {
-                settings.GeneratorSettings.DefaultPropertyNameHandling =
-                    PropertyNameHandling.CamelCase;
-            });
-            */
-
             app.UseSwaggerUi3(typeof(Startup).GetTypeInfo().Assembly, settings =>
             {
                 settings.GeneratorSettings.DefaultPropertyNameHandling = PropertyNameHandling.CamelCase;
