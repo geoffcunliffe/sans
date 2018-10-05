@@ -1,5 +1,8 @@
 #!/bin/bash
 
+## Old dbs
+CONTAINER_ID=$(docker ps -a | grep "mysql:latest" | awk '{print $1}')
+
 ## Clean up the db acceptance
 CONTAINER_ID=$(docker ps -a | grep "creditunion-db-$1" | awk '{print $1}')
 
@@ -19,4 +22,8 @@ else
 	docker rm $CONTAINER_ID || true
 fi
 
+# Extra cleanup
+docker container prune -f
+
+# Delete image if still there
 docker rmi -f $2:$3 || true
