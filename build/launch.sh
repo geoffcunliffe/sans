@@ -14,5 +14,8 @@ sed -i -e "s#Server=localhost;#Server=$IP_ADDRESS;#g" api/appsettings.json
 # Build the testing container
 docker build --tag $2:$3 .
 
+# Race condition it appears before SQL is ready to roll
+sleep 15
+
 # Run web api container
 docker run --name creditunion-api-$1 -p 44300:44300 --link creditunion-db-$1 -d $2:$3
