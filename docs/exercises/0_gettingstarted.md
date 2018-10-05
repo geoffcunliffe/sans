@@ -133,6 +133,12 @@ To get started, let's get your environment created and configured so we can hop 
     ssh://<ENTER YOUR SSH KEY ID>@git-codecommit.ap-southeast-2.amazonaws.com/v1/repos/credit-union
     ```
 
+- In the Global properties section, set the value of the **AWS_DEFAULT_REGION** to the region you are using for the workshop. The format should look like the the following:
+
+    ```bash
+    ap-southeast-2
+    ```
+
 - Go back to the Jenkins home screen and start your pipeline. This will kick off the  **Build Application** job to test your connection to the git repository.
 
 ## Troubleshooting
