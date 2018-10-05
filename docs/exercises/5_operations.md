@@ -16,7 +16,17 @@ Security in monitoring and active defense all starts with the DATA! Your mission
     docker run --name creditunion-api-$1 -p 44300:44300 --link creditunion-db-$1 -d --log-driver=awslogs --log-opt awslogs-region=${AWS_DEFAULT_REGION} --log-opt awslogs-group=creditunion-api --log-opt awslogs-create-group=true $2:$3
     ```
 
-- In the AWS Web Console, browse to the CloudWatch service.
+- Commit and push the logging patch to AWS.
+
+    ```bash
+    git add *
+    git commit -m "Fixed unit test for security bug"
+    git push aws master
+    ```
+
+- In Jenkins, start your build pipeline again to deploying the logging update.
+
+- After the deployment completes, browse to the CloudWatch service in the AWS Web Console.
 
 - View the log data in the **creditunion-api** log group
 

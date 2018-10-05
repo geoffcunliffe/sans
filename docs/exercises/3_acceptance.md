@@ -50,6 +50,30 @@ Your mission is to configure a ZAP Baseline scan against the Credit Union API Ac
 
     - Examples and details can be found on the [ZAP Baseline Wiki](https://github.com/zaproxy/zaproxy/wiki/ZAP-Baseline-Scan)
 
-- If you get stuck, view the [Solution File](./solutions/3_acceptance_dast_sln.md)
+- If you get stuck, view the [Solution File](./solutions/3_acceptance_dast.md)
 
-- Kick off your pipeline. Did any baseline test cases fail?
+- Kick off your pipeline. Did any ZAP baseline test cases fail?
+
+## Cloud Infrastructure Security
+
+Your mission is to scan the CloudFormation templates using the open source CFN NAG security scanner.
+
+- In Jenkins, open the **CFN NAG Scan** job in the Acceptance phase.
+
+- View the job configuration and locate the first (and only) build step that is responsible for executing the scanner.
+
+- Update the build step replacing the comment to actually run the docker command to kick off the ZAP baseline scan. Here are some details that you'll need to start the command:
+
+    - Execute the **cfn_nag_scan** executable
+
+    - Set the input switch to the directory containing the CloudFormation scripts (src/infrastructure)
+
+    - Set the output format to json
+
+    - Pipe the results to a file called **cfn_nag.json**
+
+    - To ensure the step always passes (instead of failing the build), put a `|| true` at the end of the command.
+
+    - Examples and details can be found on the [ZAP Baseline Wiki](https://github.com/zaproxy/zaproxy/wiki/ZAP-Baseline-Scan)
+
+- If you get stuck, view the [Solution File](./solutions/3_acceptance_cfn.md)
