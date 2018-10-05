@@ -10,6 +10,7 @@ This repository contains the Dockerfiles, infrastructure templates, source code,
 [3: Acceptance](./docs/exercises/3_acceptance.md)  
 [4: Production](./docs/exercises/4_production.md)  
 [5: Operations](./docs/exercises/5_operations.md)  
+[6: Tearing Down](./docs/exercises/6_tearingdown.md) 
 
 ## Build
 
