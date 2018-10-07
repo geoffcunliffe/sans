@@ -4,7 +4,7 @@ Plenty of verification needs to be done in the commit phase to secure DevOps bui
 
 ## Unit Testing
 
-Unit testing is critical for DevSecOps and making up for false negatives that occur with automated scanners. You'll notice in your Credit Union build pipeline that there is a **Unit Testing** step in the build phase. 
+Unit testing is critical for DevSecOps and making up for false negatives that occur with automated scanners. You'll notice in your Credit Union build pipeline that there is a **Unit Testing** step in the build phase.
 
 - Kick off your pipeline and observe that there are currently 9 passing test cases.
 
@@ -74,11 +74,7 @@ The Build phase creates a Docker container for deploying the Credit Union API. L
     REPOSITORY_URL:TAG path/to/Dockerfile
     ```
 
-- The following line of code will create the **anchore_images** file with the correct values and format:
-
-    ```bash
-    echo "${REPOSITORY_URI}:${TAG} ${WORKSPACE}/src/app/Dockerfile " > anchore_images
-    ```
+    - If you get stuck, view the [Solution File](./solutions/2_commit_anchore.md)
 
 - Save the Anchore scan job and start the pipeline. Once it is done, inspect the image scan results. Are any high risk vulnerabilities identified?
 

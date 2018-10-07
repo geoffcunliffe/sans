@@ -70,7 +70,7 @@ Your mission is to scan the CloudFormation templates using the open source CFN N
 
     - Set the output format to json
 
-    - Pipe the results to a file called **cfn_nag.json**
+    - Pipe the results to a new file at **${WORKSPACE}/cfn_nag.json**
 
     - To ensure the step always passes (instead of failing the build), put a `|| true` at the end of the command.
 

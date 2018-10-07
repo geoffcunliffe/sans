@@ -7,14 +7,14 @@ Security in monitoring and active defense all starts with the DATA! Your mission
 - Open the /build/launch.sh script and find the docker run command for the API container. It should look similar to the following:
 
     ```bash
-    docker run --name creditunion-api-$1 -p 44300:44300 --link creditunion-db-$1 -d $2:$3
+    docker run --name creditunion-api-$1 -p $PORT:44300 --link creditunion-db-$1 -d $2:$3
     ```
 
 - Update the docker run command to enable the docker CloudWatch logs driver and write logging data into CloudWatch:
 
-    ```
-    docker run --name creditunion-api-$1 -p 44300:44300 --link creditunion-db-$1 -d --log-driver=awslogs --log-opt awslogs-region=${AWS_DEFAULT_REGION} --log-opt awslogs-group=creditunion-api --log-opt awslogs-create-group=true $2:$3
-    ```
+    - The docker documentation can help you find the right switches to pass in the [Docker run statement](https://docs.docker.com/config/containers/logging/awslogs/#awslogs-create-group)
+
+    - If you get stuck, view the [Solution File](./solutions/5_operations_cloudwatch.md)
 
 - Commit and push the logging patch to AWS.
 
