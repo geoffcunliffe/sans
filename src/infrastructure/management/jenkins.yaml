@@ -14,7 +14,7 @@ Parameters:
 Mappings:
    Images:
     ap-southeast-2:
-      jenkinsAmi: "ami-028b890291305e031"
+      jenkinsAmi: "ami-0a248d4932f4cf2e1"
 
 Resources:
   JenkinsInstanceProfile:
