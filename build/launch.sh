@@ -18,4 +18,9 @@ docker build --tag $2:$3 .
 sleep 30
 
 # Run web api container
-docker run --name creditunion-api-$1 -p 44300:44300 --link creditunion-db-$1 -d $2:$3
+if [[ "acceptance" == "$1" ]]; then
+    PORT=44301
+else
+    PORT=44300
+fi
+docker run --name creditunion-api-$1 -p $PORT:44300 --link creditunion-db-$1 -d $2:$3
