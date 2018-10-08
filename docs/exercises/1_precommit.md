@@ -22,10 +22,10 @@ Install and configure the git-secrets pre-commit hook and scan the repository fo
 
 - Visit the [git-secrets](https://github.com/awslabs/git-secrets) repository for install instructions for your OS.
 
-- Change your directory to the devsecops-workshop directory.
+- Change your directory to the workshop directory.
 
     ```bash
-    cd ~/devsecops-workshop
+    cd ~/workshop
     ```
 
 - Install git-secrets and register the AWS provider for your repository

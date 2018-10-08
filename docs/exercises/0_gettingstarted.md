@@ -8,7 +8,15 @@ To get started, let's get your environment created and configured so we can hop 
 
 - Sign in to the AWS Console
 
-- Change the region (top right) to the region used for the worshop
+- Subscribe to the Bitnami Jenkins AWS image by browsing to this link:
+
+    - [https://aws.amazon.com/marketplace/pp?sku=41y8r0g9hdddfs61n31t11ozv](https://aws.amazon.com/marketplace/pp?sku=41y8r0g9hdddfs61n31t11ozv)
+
+    - Press the **Continue To Subscribe** button in the top right corner
+
+    - Press the Accept the Terms button to finish your registration
+
+- Change the region (top right) to the region used for the workshop
 
 - In the Services menu, type EC2 and press the link
 
@@ -16,7 +24,15 @@ To get started, let's get your environment created and configured so we can hop 
 
 - Press the Create Key Pair button
 
-    - Enter **devsecops** as the key pair name and download the file into your ~/.ssh/ directory
+    - Enter **devsecops** as the key pair name and download the file
+
+    - Move the **devsecops.pem** file into your ~/.ssh/ directory
+
+    - Change the permissions on the **devsecops.pem** file to 400:
+
+        ```bash
+        chmod 400 ~/.ssh/devsecops.pem
+        ```
 
 ## 1) Launch the DevSecOps Workshop CloudFormation Stack
 
@@ -27,16 +43,27 @@ To get started, let's get your environment created and configured so we can hop 
 - Press the button to **Create a new stack** and upload the master stack from the workshop files:
 
     ```
-    ~/devsecops-workshop/infrastructure/master.yaml
+    ~/workshop/src/infrastructure/master.yaml
     ```
 
-    - Enter the name of the bucket given to you by the instructor
+- Press Next and enter the following parameter values:
 
-- The stack will take a few minutes to complete.
+    - Stack Name: **DevSecOps-Workshop**
+
+    - Admin IP: Enter your IP address CIRD block. This command should help:
+
+        ```bash
+        echo $(curl ipinfo.io/ip -s)/32
+        ```
+    - Template Bucket: Enter the name of the bucket given to you by the instructor
+
+- Press Next again and make sure to check the box to acknowledge that AWS CloudFormation might create IAM resources with custom names.
+
+- Finish the wizard. The stack will take a few minutes to complete.
 
 - When the stack completes, find the following output values:
 
-    - **Jenkins Front End** should look similar to this URL: *https://<YOUR IP ADDRESS>/jenkins*.
+    - **Jenkins Front End** should look similar to this URL: *https://YOUR IP ADDRESS/jenkins*.
 
     - Browse to the Jenkins front end. You will see a certificate warning because your workshop image is using a self signed certificate. This is not a production system, just for demos. Go ahead and accept the certificate warning and sign in using these credentials:
 
@@ -89,10 +116,10 @@ To get started, let's get your environment created and configured so we can hop 
     AddKeysToAgent yes
     ```
 
-- Change your directory to the devsecops-workshop directory.
+- Change your directory to the workshop directory.
 
     ```bash
-    cd ~/devsecops-workshop
+    cd ~/workshop
     ```
 
 - Add a git remote pointing to the new CodeCommit repository.
@@ -140,27 +167,3 @@ To get started, let's get your environment created and configured so we can hop 
     ```
 
 - Go back to the Jenkins home screen and start your pipeline. This will kick off the  **Build Application** job to test your connection to the git repository.
-
-## Troubleshooting
-
-- Helpful troubleshooting commands:
-
-    - Restarting Jenkins / Tomcat services
-
-    ```bash
-    sudo /opt/bitnami/ctlscript.sh restart
-    ```
-
-    - Clearing up disk space when Docker fills up
-
-    ```bash
-    docker rmi $(docker images -q -f "dangling=true")
-    docker rmi --force $(docker images -q creditunion-apitests | uniq)
-    ```
-
-    - Restarting Docker
-
-    ```
-    sudo service docker stop
-    sudo service docker start
-    ```
